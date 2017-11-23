@@ -1,6 +1,6 @@
 {
   "name": "egg-job",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "description": "a job queue build for eggjs",
   "eggPlugin": {
     "name": "job"
