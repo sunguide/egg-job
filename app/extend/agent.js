@@ -2,10 +2,10 @@
 
 const Strategy = require('../../lib/strategy/base');
 const Job = require('../../lib/job');
-// const Timer = require('../../lib/timer');
+const Subscribe = require('../../lib/subscribe');
 
 const JOB = Symbol('agent#job');
-// const TIMER = Symbol('agent#scheduleTimer');
+const SUBSCRIBE = Symbol('agent#jobSubscribe');
 
 module.exports = {
   /**
@@ -27,15 +27,15 @@ module.exports = {
   },
 
   /**
-   * @member agent#scheduleTimer
+   * @member agent#jobSubscribe
    */
-  get scheduleTimer() {
-    if (!this[TIMER]) {
-      this[TIMER] = new Timer(this);
+  get jobSubscribe() {
+    if (!this[SUBSCRIBE]) {
+      this[SUBSCRIBE] = new Subscribe(this);
       this.beforeClose(() => {
-        return this[TIMER].close();
+        return this[SUBSCRIBE].close();
       });
     }
-    return this[TIMER];
+    return this[SUBSCRIBE];
   },
 };
