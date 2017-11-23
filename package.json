@@ -1,7 +1,7 @@
 {
   "name": "egg-job",
-  "version": "1.0.2",
-  "description": "a job queue build for eggjs",
+  "version": "1.0.3",
+  "description": "a job queue, built for eggjs",
   "eggPlugin": {
     "name": "job"
   },
@@ -12,7 +12,8 @@
   ],
   "dependencies": {
     "is-type-of": "^1.2.0",
-    "kue": "^0.11.6"
+    "kue": "^0.11.6",
+    "egg-kue":"^0.1.2"
   },
   "devDependencies": {
     "autod": "^2.8.0",
@@ -41,10 +42,12 @@
   "files": [
     "app.js",
     "agent.js",
-    "config"
+    "config",
+    "lib/*",
+    "app/*"
   ],
   "ci": {
-    "version": "6, 8"
+    "version": "8, 9"
   },
   "repository": {
     "type": "git",
@@ -53,7 +56,7 @@
   "bugs": {
     "url": "https://github.com/eggjs/egg/issues"
   },
-  "homepage": "https://github.com/eggjs/egg-job#readme",
+  "homepage": "https://github.com/sunguide/egg-job#readme",
   "author": "sunguide@qq.com",
   "license": "MIT"
 }
