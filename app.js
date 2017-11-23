@@ -1,13 +1,14 @@
 'use strict';
 const kue = require("kue");
 const loadJob = require('./lib/load_job');
+const assert = require('assert');
+const qs = require('querystring');
+const path = require('path');
 
 module.exports = app => {
-  console.log('app.config.env =', app.config.env);
-
   const jobs = loadJob(app);
-  app.addSingleton('job', createJob);
-
+  // app.addSingleton('job', createJob);
+  app.job = createJob(app.config.job.client,app);
   // for test purpose
   app.runJob = jobPath => {
     if (!path.isAbsolute(jobPath)) {
@@ -47,7 +48,7 @@ module.exports = app => {
     const key = data.key;
     const job = jobs[key];
 
-    if (!schedule) {
+    if (!job) {
       app.coreLogger.warn(`[egg-job] unknown task: ${key}`);
       return;
     }
@@ -83,24 +84,18 @@ module.exports = app => {
  * @return {Object}          返回创建的 Job 实例
  */
 function createJob(config, app) {
+  const assert = require('assert');
+  console.log(config);
   const { redis } = config;
-  assert(redis && redis.host && redis.port && config.queuePrefix);
+  assert(redis && redis.host && redis.port,"[egg-job] config.jo.redis required");
 
   const jobQueue = kue.createQueue({
-    prefix: config.queuePrefix,
+    prefix: config.queuePrefix | "job",
     redis,
   });
 
   app.beforeStart(function* () {
-    const count = yield new Promise((resolve, reject) => {
-      Job.client.zcard(Job.client.getKey('jobs'), (err, count) => {
-        if (err) {
-          reject(err);
-        }
-        resolve(count);
-      });
-    });
-    app.coreLogger.info(`[egg-job] instance status OK, current job count is ${count}`);
+    app.coreLogger.info(`[egg-job] instance status OK`);
   });
   return jobQueue;
 }

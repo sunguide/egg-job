@@ -29,7 +29,7 @@ Description here.
 ```bash
 $ npm i egg-job --save
 ```
-
+## 依赖 egg-kue 正在进行升级
 ## Usage
 
 ```js
