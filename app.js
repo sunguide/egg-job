@@ -4,39 +4,38 @@ const loadJob = require('./lib/load_job');
 const assert = require('assert');
 const qs = require('querystring');
 const path = require('path');
-
+const Job = require("./lib/job");
 module.exports = app => {
     const jobs = loadJob(app);
     // app.addSingleton('job', createJob);
     // let jobQueue = createJob(app.config.job.client, app);
-
+    app.job = new Job(app);
     // for test purpose
     app.runJob = jobPath => {
-        if (!path.isAbsolute(jobPath)) {
-            jobPath = path.join(app.config.baseDir, 'app/job', jobPath);
-        }
-        jobPath = require.resolve(jobPath);
-        let job;
+      if (!path.isAbsolute(jobPath)) {
+          jobPath = path.join(app.config.baseDir, 'app/job', jobPath);
+      }
+      jobPath = require.resolve(jobPath);
+      let job;
 
-        try {
-            job = jobs[jobPath];
-            if (!job) {
-                throw new Error(`Cannot find job ${jobPath}`);
-            }
-        } catch (err) {
-            err.message = `[egg-job] ${err.message}`;
-            return Promise.reject(err);
-        }
+      try {
+          job = jobs[jobPath];
+          if (!job) {
+              throw new Error(`Cannot find job ${jobPath}`);
+          }
+      } catch (err) {
+          err.message = `[egg-job] ${err.message}`;
+          return Promise.reject(err);
+      }
 
-        // run with anonymous context
-        const ctx = app.createAnonymousContext({
-            method: 'JOB',
-            url: `/__job?path=${jobPath}&${qs.stringify(job.job)}`,
-        });
+      // run with anonymous context
+      const ctx = app.createAnonymousContext({
+          method: 'JOB',
+          url: `/__job?path=${jobPath}&${qs.stringify(job.job)}`,
+      });
 
-        return job.task(ctx);
-    };
-
+      return job.task(ctx);
+    }
     // log job list
     for (const s in jobs) {
         const job = jobs[s];

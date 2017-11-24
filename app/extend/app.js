@@ -41,4 +41,31 @@ module.exports = {
         }
         return this[SUBSCRIBE];
     },
+
+    runJob(jobPath) {
+        if (!path.isAbsolute(jobPath)) {
+            jobPath = path.join(app.config.baseDir, 'app/job', jobPath);
+        }
+        jobPath = require.resolve(jobPath);
+        let job;
+
+        try {
+            job = jobs[jobPath];
+            if (!job) {
+                throw new Error(`Cannot find job ${jobPath}`);
+            }
+        } catch (err) {
+            err.message = `[egg-job] ${err.message}`;
+            return Promise.reject(err);
+        }
+
+        // run with anonymous context
+        const ctx = app.createAnonymousContext({
+            method: 'JOB',
+            url: `/__job?path=${jobPath}&${qs.stringify(job.job)}`,
+        });
+
+        return job.task(ctx);
+    };
+
 };
