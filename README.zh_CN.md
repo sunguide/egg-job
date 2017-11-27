@@ -54,14 +54,108 @@ exports.job = {
 ```
 
 ## 使用场景
-
-- Why and What: 描述为什么会有这个插件，它主要在完成一件什么事情。
-尽可能描述详细。
-- How: 描述这个插件是怎样使用的，具体的示例代码，甚至提供一个完整的示例，并给出链接。
+一个带有节点数目控制的分布式任务执行工具。
 
 ## 详细配置
 
 请到 [config/config.default.js](config/config.default.js) 查看详细配置项说明。
+```js
+// {app_root}/config/config.default.js
+exports.job = {
+  client :{
+            prefix: 'q',
+            redis: {
+                port: 6379,
+                host: '127.0.0.1',
+                password: '',
+                db: 9, // if provided select a non-default redis db
+                options: {
+                    // see https://github.com/mranney/node_redis#rediscreateclient
+                }
+            }
+        }
+};
+```
+
+## 简单实用
+
+####发布一个job
+```js
+this.app.job.publish({
+  name:"download",//job name
+  nodes:10,//最大执行的节点数，0 不限
+  ttl:0, //失效时间s，0永不失效
+});
+```
+####处理job的实例
+```js
+// {app_root}/app/job/email.js
+const Subscription = require('egg').Subscription;
+
+class email extends Subscription {
+  //必须
+  static get job(){
+    return {
+      type: 'worker',//worker or all,这个参数同egg-schedule
+      name: 'download', //job name
+      immediate: false, //是否立即执行
+    };
+  }
+  //必须
+  async subscribe() {
+      //这里模仿的是处理一个队里消息，执行邮件发送
+      this.ctx.app.kue.process('task_email', function(job, done){
+        startDownload(job, done);
+      });
+
+      function email(job, done) {
+        //....
+        //more
+        //....
+        done("done success");
+      }
+  }
+}
+
+module.exports = email;
+
+```
+
+####发布job的实例
+```js
+// {app_root}/app/controller/email.js
+
+'use strict';
+module.exports = app => {
+    class emailController extends app.Controller {
+        async send(ctx){
+            console.log("job start/");
+
+            //发布一个job
+            let result = await this.app.job.publish({
+              name:"download",
+              nodes:10,//节点数
+              ttl:12123423,
+            });
+
+            //job 要处理的队列增加一条数据
+            var job = ctx.app.kue.create('task_download', {
+                title: 'welcome email for you',
+                to: 'sunguide@qq.cn',
+                template: 'welcome-email',
+                url:"https://www.sunguide.cn"
+            }).save( function(err){
+               if( !err ) console.log( job.id );
+            });
+            ctx.body = "task comming";
+        }
+
+    }
+    return emailController;
+};
+
+
+```
 
 ## 单元测试
 
