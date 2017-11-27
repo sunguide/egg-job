@@ -39,11 +39,11 @@
     "autod": "autod"
   },
   "files": [
-    "app.js",
-    "agent.js",
-    "config",
+    "app",
     "lib",
-    "app"
+    "config",
+    "agent.js",
+    "app.js"
   ],
   "ci": {
     "version": "8, 9"
