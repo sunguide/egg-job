@@ -9,12 +9,12 @@
 
 [npm-image]: https://img.shields.io/npm/v/egg-job.svg?style=flat-square
 [npm-url]: https://npmjs.org/package/egg-job
-[travis-image]: https://img.shields.io/travis/eggjs/egg-job.svg?style=flat-square
-[travis-url]: https://travis-ci.org/eggjs/egg-job
-[codecov-image]: https://img.shields.io/codecov/c/github/eggjs/egg-job.svg?style=flat-square
-[codecov-url]: https://codecov.io/github/eggjs/egg-job?branch=master
-[david-image]: https://img.shields.io/david/eggjs/egg-job.svg?style=flat-square
-[david-url]: https://david-dm.org/eggjs/egg-job
+[travis-image]: https://img.shields.io/travis/sunguide/egg-job.svg?style=flat-square
+[travis-url]: https://travis-ci.org/sunguide/egg-job
+[codecov-image]: https://img.shields.io/codecov/c/github/sunguide/egg-job.svg?style=flat-square
+[codecov-url]: https://codecov.io/github/sunguide/egg-job?branch=master
+[david-image]: https://img.shields.io/david/sunguide/egg-job.svg?style=flat-square
+[david-url]: https://david-dm.org/sunguide/egg-job
 [snyk-image]: https://snyk.io/test/npm/egg-job/badge.svg?style=flat-square
 [snyk-url]: https://snyk.io/test/npm/egg-job
 [download-image]: https://img.shields.io/npm/dm/egg-job.svg?style=flat-square
