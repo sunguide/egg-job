@@ -48,8 +48,8 @@ exports.job = {
             prefix: 'q',
             redis: {
                 port: 6379,
-                host: '10.0.30.61',
-                password: 'fuckyou',
+                host: '127.0.0.1',
+                password: '',
                 db: 9, // if provided select a non-default redis db
                 options: {
                     // see https://github.com/mranney/node_redis#rediscreateclient
@@ -62,15 +62,15 @@ exports.job = {
 see [config/config.default.js](config/config.default.js) for more detail.
 
 ## Example
-####create a job
+###create a job
 ```js
 this.app.job.publish({
   name:"download",//job name
-  nodes:10,//top nodes，0 
+  nodes:10,//top nodes，0
   ttl:0, //timeout s，0
 });
 ```
-####job process
+###job process
 ```js
 // {app_root}/app/job/email.js
 const Subscription = require('egg').Subscription;
@@ -104,7 +104,7 @@ module.exports = email;
 
 ```
 
-#### job publish
+### job publish
 ```js
 // {app_root}/app/controller/email.js
 

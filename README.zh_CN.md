@@ -79,7 +79,7 @@ exports.job = {
 
 ## 简单实用
 
-####发布一个job
+###发布一个job
 ```js
 this.app.job.publish({
   name:"download",//job name
@@ -87,7 +87,7 @@ this.app.job.publish({
   ttl:0, //失效时间s，0永不失效
 });
 ```
-####处理job的实例
+###处理job的实例
 ```js
 // {app_root}/app/job/email.js
 const Subscription = require('egg').Subscription;
@@ -121,7 +121,7 @@ module.exports = email;
 
 ```
 
-####发布job的实例
+###发布job的实例
 ```js
 // {app_root}/app/controller/email.js
 
